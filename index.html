@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vinted Value</title>
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#0b1220">\n<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2716%27 fill=%27%2360a5fa%27/%3E%3Ctext x=%2732%27 y=%2741%27 text-anchor=%27middle%27 font-size=%2726%27 font-family=%27Arial%27 font-weight=%27700%27 fill=%27%2307111f%27%3EVV%3C/text%3E%3C/svg%3E">
 <style>
 :root{
   --bg:#07111f;--panel:#0d1728;--panel2:#111d31;--line:#22314a;--text:#eef4ff;--muted:#93a4bf;
@@ -203,10 +203,10 @@ $('#resetSettings').onclick=()=>{settings={...DEFAULTS};saveSettingsLocal();rend
 async function compressImage(file){
   const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)});
   const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=data});
-  const max=1100,scale=Math.min(1,max/Math.max(img.width,img.height));
+  const max=900,scale=Math.min(1,max/Math.max(img.width,img.height));
   const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
   c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-  return c.toDataURL('image/jpeg',.68);
+  return c.toDataURL('image/jpeg',.58);
 }
 async function addFiles(files){
   for(const f of [...files]){
@@ -305,11 +305,25 @@ async function analyze(){
   const inputs={priceOverride:num($('#priceOverride').value),checkoutTotal:num($('#checkoutTotal').value)};
   $('#analyzeBtn').disabled=true;startStatus();
   try{
-    const r=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      url,screenshots,businessContext:settings
-    })});
-    const data=await r.json();
-    if(!r.ok)throw new Error(data.error||'Analysis failed.');
+    const payload={url,screenshots,businessContext:settings};
+    const body=JSON.stringify(payload);
+    const approxMb=new Blob([body]).size/1024/1024;
+    if(approxMb>3.8){
+      throw new Error('The screenshots are too large for one analysis request ('+approxMb.toFixed(1)+' MB). Remove a few images and try again.');
+    }
+    const r=await fetch('/api/analyze',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body
+    });
+    const raw=await r.text();
+    let data=null;
+    try{data=raw?JSON.parse(raw):{}}catch{
+      const preview=raw.replace(/\s+/g,' ').slice(0,180);
+      throw new Error('Server returned '+r.status+' '+r.statusText+' instead of JSON'+(preview?': '+preview:''));
+    }
+    if(!r.ok)throw new Error(data.error||('Analysis failed ('+r.status+').'));
+    if(!data.analysis)throw new Error('The server returned no valuation.');
     renderResult(data.analysis,url,inputs);
   }catch(err){
     const extra=String(err.message).includes('OPENAI_API_KEY')?' This deployment needs the OPENAI_API_KEY environment variable.':'';
