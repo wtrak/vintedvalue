@@ -159,6 +159,7 @@ footer{color:#73859f;font-size:12px;padding:24px 0 10px}
 </div>
 
 <script>
+const API_ENDPOINT="https://vinted-value-lyart.vercel.app/api/analyze";
 const DEFAULTS={
   minHammer:2.50,buyerPremiumPct:21,orderFee:5,smallItemFee:1,perOrderShippingFee:1,avgItemsPerOrder:5,
   meestBoxUsd:165,meestUsableKg:23.5,importReservePct:15,processingPct:3,targetProfitPerSoldLot:2,
@@ -311,7 +312,7 @@ async function analyze(){
     if(approxMb>3.8){
       throw new Error('The screenshots are too large for one analysis request ('+approxMb.toFixed(1)+' MB). Remove a few images and try again.');
     }
-    const r=await fetch('/api/analyze',{
+    const r=await fetch(API_ENDPOINT,{
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
       body
