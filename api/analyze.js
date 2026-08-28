@@ -22,10 +22,28 @@ function isVintedUrl(value) {
 }
 
 module.exports = async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    return res.status(405).json({ error: "POST only" });
+  if (req.method === "OPTIONS") {
+    res.setHeader("Allow", "GET, POST, OPTIONS");
+    return res.status(204).end();
   }
+
+  if (req.method === "GET") {
+    return res.status(200).json({
+      ok: true,
+      service: "vinted-value-analyze",
+      api_key_configured: Boolean(process.env.OPENAI_API_KEY)
+    });
+  }
+
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "GET, POST, OPTIONS");
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  console.log("analyze POST", {
+    contentLength: req.headers["content-length"] || null,
+    hasApiKey: Boolean(process.env.OPENAI_API_KEY)
+  });
 
   if (!process.env.OPENAI_API_KEY) {
     return res.status(500).json({
@@ -34,7 +52,15 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  const body = req.body || {};
+  let body = req.body || {};
+  if (typeof body === "string") {
+    try {
+      body = JSON.parse(body);
+    } catch {
+      return res.status(400).json({ error: "Request body was not valid JSON." });
+    }
+  }
+
   const url = String(body.url || "").trim();
   const screenshots = Array.isArray(body.screenshots) ? body.screenshots.slice(0, 8) : [];
 
