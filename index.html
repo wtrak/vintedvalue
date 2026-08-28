@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vinted Value</title>
+<meta name="theme-color" content="#0b1220">
+<style>
+:root{
+  --bg:#07111f;--panel:#0d1728;--panel2:#111d31;--line:#22314a;--text:#eef4ff;--muted:#93a4bf;
+  --blue:#60a5fa;--green:#4ade80;--yellow:#fbbf24;--red:#fb7185;--purple:#c084fc;--shadow:0 16px 50px rgba(0,0,0,.28)
+}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#08111f 0,#07111f 45%,#091322 100%);color:var(--text);font:15px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+button,input{font:inherit}.shell{max-width:1180px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0 26px}.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#7dd3fc,#60a5fa 55%,#8b5cf6);display:grid;place-items:center;color:#07111f;font-weight:900;font-size:19px;box-shadow:var(--shadow)}h1{font-size:24px;margin:0}.sub{color:var(--muted);font-size:13px;margin-top:2px}
+.btn{border:1px solid var(--line);background:#0c1627;color:var(--text);border-radius:11px;padding:10px 13px;cursor:pointer}.btn:hover{border-color:#3f5a82}.btn.primary{background:linear-gradient(135deg,#2563eb,#4f46e5);border-color:transparent;font-weight:800}.btn.ghost{background:transparent}
+.hero{background:radial-gradient(circle at 85% 0%,rgba(96,165,250,.15),transparent 30%),var(--panel);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow)}
+.hero h2{font-size:30px;line-height:1.15;margin:0 0 8px}.hero p{margin:0;color:var(--muted);max-width:760px}.urlrow{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:20px}.urlrow input,.field input{width:100%;background:#07101e;color:var(--text);border:1px solid #2b3b57;border-radius:12px;padding:14px 15px;outline:none}.urlrow input:focus,.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(96,165,250,.12)}.analyze{padding:0 22px;min-height:48px}
+.quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.tag{border:1px solid var(--line);background:#0a1424;color:#b8c7dc;border-radius:999px;padding:6px 9px;font-size:12px}
+.upload{margin-top:16px;border:1px dashed #365075;border-radius:14px;padding:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;background:#091424}.upload strong{display:block}.upload small{color:var(--muted)}.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.thumb{width:62px;height:62px;object-fit:cover;border-radius:9px;border:1px solid var(--line)}
+.advanced{margin-top:14px}.advanced summary{cursor:pointer;color:#c8d6ea}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}
+.status{display:none;margin:16px 0 0;padding:12px;border:1px solid var(--line);border-radius:12px;background:#091424;color:#c8d6ea}.status.show{display:block}.spinner{display:inline-block;width:13px;height:13px;border:2px solid #39506e;border-top-color:#93c5fd;border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:-2px}@keyframes spin{to{transform:rotate(360deg)}}
+.results{display:none;margin-top:18px}.results.show{display:block}.decision{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:18px}.verdict{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;letter-spacing:.05em}.buy{background:rgba(74,222,128,.12);color:#86efac;border:1px solid rgba(74,222,128,.35)}.offer{background:rgba(251,191,36,.12);color:#fde68a;border:1px solid rgba(251,191,36,.35)}.pass{background:rgba(251,113,133,.12);color:#fda4af;border:1px solid rgba(251,113,133,.35)}.need{background:rgba(192,132,252,.12);color:#d8b4fe;border:1px solid rgba(192,132,252,.35)}
+.bigmoney{font-size:40px;font-weight:900;line-height:1;margin:14px 0 4px}.moneylabel{color:var(--muted);font-size:12px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}.metric{background:#091424;border:1px solid var(--line);border-radius:12px;padding:12px}.metric .k{font-size:12px;color:var(--muted)}.metric .v{font-size:20px;font-weight:850;margin-top:3px}.metric .s{font-size:11px;color:var(--muted);margin-top:2px}
+.titleline{font-size:18px;font-weight:850;margin:0 0 4px}.muted{color:var(--muted)}.sectiontitle{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:#9fb0c8;font-weight:800;margin:0 0 10px}
+.breakdown{margin-top:14px}.row{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid rgba(34,49,74,.65)}.row:last-child{border-bottom:0}.row span:first-child{color:var(--muted)}.good{color:#86efac}.warn{color:#fde68a}.bad{color:#fda4af}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.list{margin:0;padding-left:18px}.list li{margin:6px 0}.strategy{white-space:pre-wrap}.confidence{height:8px;background:#091424;border-radius:999px;overflow:hidden;margin-top:8px}.confidence>div{height:100%;background:linear-gradient(90deg,#60a5fa,#8b5cf6)}
+.history{margin-top:18px}.historyHead{display:flex;justify-content:space-between;align-items:center;gap:12px}.histList{display:grid;gap:8px;margin-top:10px}.hist{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:11px 12px}.hist a{color:#cfe1ff;text-decoration:none}.hist small{color:var(--muted)}.histprice{font-weight:800}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;place-items:center;padding:18px;z-index:20}.modal.show{display:grid}.modalbox{width:min(720px,100%);max-height:90vh;overflow:auto;background:#0b1526;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}.modalhead{display:flex;justify-content:space-between;align-items:center}.settingsgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}.note{font-size:12px;color:var(--muted);background:#091424;border:1px solid var(--line);border-radius:11px;padding:10px}
+.error{display:none;margin-top:14px;padding:12px;border:1px solid rgba(251,113,133,.35);background:rgba(251,113,133,.08);border-radius:12px;color:#fecdd3}.error.show{display:block}
+footer{color:#73859f;font-size:12px;padding:24px 0 10px}
+@media(max-width:760px){.shell{padding:14px}.top{padding-top:8px}.hero{padding:18px}.hero h2{font-size:25px}.urlrow{grid-template-columns:1fr}.analyze{min-height:48px}.decision,.grid2{grid-template-columns:1fr}.three{grid-template-columns:1fr}.fields,.settingsgrid{grid-template-columns:1fr}.hist{grid-template-columns:1fr auto}.hist .histmeta{grid-column:1/-1}.top .sub{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top">
+    <div class="brand"><div class="logo">VV</div><div><h1>Vinted Value</h1><div class="sub">Vinted → Arkansas auction purchase decisions</div></div></div>
+    <button class="btn" id="settingsBtn">Settings</button>
+  </div>
+
+  <section class="hero">
+    <h2>Paste a Vinted listing. Get the number.</h2>
+    <p>Vinted Value estimates realistic U.S. auction hammer value, sell-through, Meest freight, and the most you should pay — based on your actual auction economics.</p>
+    <div class="urlrow">
+      <input id="url" inputmode="url" autocomplete="off" placeholder="https://www.vinted.com/items/..." aria-label="Vinted listing URL">
+      <button class="btn primary analyze" id="analyzeBtn">Analyze Listing</button>
+    </div>
+    <div class="quick">
+      <span class="tag">$2.50 minimum bid</span><span class="tag">21% buyer premium</span><span class="tag">$5/order</span><span class="tag">$1/small item</span><span class="tag">Label passed through</span>
+    </div>
+
+    <div class="upload" id="dropZone">
+      <div><strong>Optional: add listing screenshots</strong><small>Paste or drop screenshots when Vinted's public page doesn't expose every image. Up to 8 images.</small></div>
+      <label class="btn">Add images<input id="fileInput" type="file" accept="image/*" multiple hidden></label>
+    </div>
+    <div class="thumbs" id="thumbs"></div>
+
+    <details class="advanced">
+      <summary>Optional purchase overrides</summary>
+      <div class="fields">
+        <div class="field"><label>Seller item price override (USD)</label><input id="priceOverride" type="number" min="0" step=".01" placeholder="Use listing price if blank"></div>
+        <div class="field"><label>Known all-in Vinted checkout total (USD)</label><input id="checkoutTotal" type="number" min="0" step=".01" placeholder="Item + protection + local shipping"></div>
+      </div>
+    </details>
+
+    <div class="status" id="status"><span class="spinner"></span><span id="statusText">Reading listing…</span></div>
+    <div class="error" id="error"></div>
+  </section>
+
+  <section class="results" id="results">
+    <div class="decision">
+      <article class="card">
+        <div class="verdict">
+          <div><span class="pill buy" id="verdictPill">BUY</span><div class="titleline" id="listingTitle" style="margin-top:12px">—</div><div class="muted" id="listingMeta">—</div></div>
+          <div style="text-align:right"><div class="moneylabel">Confidence</div><div style="font-weight:900;font-size:21px" id="confidenceNum">—</div></div>
+        </div>
+        <div class="confidence"><div id="confidenceBar" style="width:0%"></div></div>
+        <div class="bigmoney" id="offerPrice">$—</div>
+        <div class="moneylabel" id="offerLabel">Recommended opening offer</div>
+        <div class="three">
+          <div class="metric"><div class="k">Target buy</div><div class="v" id="targetBuy">$—</div><div class="s">all-in Poland</div></div>
+          <div class="metric"><div class="k">Walk-away max</div><div class="v" id="walkAway">$—</div><div class="s">all-in Poland</div></div>
+          <div class="metric"><div class="k">Profit at ask</div><div class="v" id="profitAsk">$—</div><div class="s" id="profitAskSub">expected first pass</div></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="sectiontitle">Auction value</div>
+        <div class="three">
+          <div class="metric"><div class="k">Low hammer</div><div class="v" id="hammerLow">$—</div></div>
+          <div class="metric"><div class="k">Expected</div><div class="v good" id="hammerExp">$—</div></div>
+          <div class="metric"><div class="k">High</div><div class="v" id="hammerHigh">$—</div></div>
+        </div>
+        <div class="breakdown">
+          <div class="row"><span>Recommended auction lots</span><strong id="auctionLots">—</strong></div>
+          <div class="row"><span>First-pass sell-through</span><strong id="sellThrough">—</strong></div>
+          <div class="row"><span>Expected sold lots</span><strong id="soldLots">—</strong></div>
+          <div class="row"><span>Avg. hammer / sold lot</span><strong id="avgHammer">—</strong></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="grid2">
+      <article class="card">
+        <div class="sectiontitle">Unit economics</div>
+        <div class="row"><span>Expected hammer</span><strong id="econHammer">$—</strong></div>
+        <div class="row"><span>21% buyer premium revenue</span><strong id="econBP">$—</strong></div>
+        <div class="row"><span>$1 small-item fee allocation</span><strong id="econItemFee">$—</strong></div>
+        <div class="row"><span>Order-fee allocation</span><strong id="econOrderFee">$—</strong></div>
+        <div class="row"><span>Processing reserve</span><strong id="econProcessing">−$—</strong></div>
+        <div class="row"><span>Meest Poland → Arkansas</span><strong id="econMeest">−$—</strong></div>
+        <div class="row"><span>Target profit reserve</span><strong id="econTargetProfit">−$—</strong></div>
+        <div class="row"><span>Import reserve</span><strong id="econImport">variable</strong></div>
+      </article>
+
+      <article class="card">
+        <div class="sectiontitle">Logistics</div>
+        <div class="row"><span>Estimated merchandise weight</span><strong id="weight">—</strong></div>
+        <div class="row"><span>Meest freight / physical piece</span><strong id="freightPiece">$—</strong></div>
+        <div class="row"><span>Shipping profile</span><strong id="shipProfile">—</strong></div>
+        <p class="muted" id="logisticsNote"></p>
+        <div class="note">Domestic postage is not treated as a cost here because the actual label is charged to the U.S. customer.</div>
+      </article>
+    </div>
+
+    <div class="grid2">
+      <article class="card">
+        <div class="sectiontitle">How I would sell it</div>
+        <div class="strategy" id="strategy">—</div>
+        <div id="standoutWrap" style="margin-top:14px"><div class="sectiontitle">Possible standouts</div><ul class="list" id="standouts"></ul></div>
+      </article>
+
+      <article class="card">
+        <div class="sectiontitle">Why / risk</div>
+        <div class="grid2" style="margin-top:0">
+          <div><strong class="good">Strengths</strong><ul class="list" id="strengths"></ul></div>
+          <div><strong class="warn">Risks</strong><ul class="list" id="risks"></ul></div>
+        </div>
+        <p class="muted" id="marketNotes"></p>
+        <p class="muted" id="confidenceNote"></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="history">
+    <div class="historyHead"><div><div class="sectiontitle" style="margin:0">Recent analyses</div></div><button class="btn ghost" id="clearHistory">Clear</button></div>
+    <div class="histList" id="historyList"></div>
+  </section>
+
+  <footer>Vinted Value is a sourcing decision tool. Auction estimates are intentionally conservative and depend on condition, buyer demand, listing access, and how lots are grouped.</footer>
+</div>
+
+<div class="modal" id="settingsModal">
+  <div class="modalbox">
+    <div class="modalhead"><div><h2 style="margin:0">Business settings</h2><div class="muted">These drive the purchase-price calculation.</div></div><button class="btn" id="closeSettings">Close</button></div>
+    <div class="settingsgrid" id="settingsGrid"></div>
+    <div class="note">“Target buy” preserves the target profit per sold auction lot. “Walk-away max” preserves only the floor profit. The app conservatively applies the import reserve to the all-in Poland acquisition cost.</div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px"><button class="btn" id="resetSettings">Reset defaults</button><button class="btn primary" id="saveSettings">Save settings</button></div>
+  </div>
+</div>
+
+<script>
+const DEFAULTS={
+  minHammer:2.50,buyerPremiumPct:21,orderFee:5,smallItemFee:1,perOrderShippingFee:1,avgItemsPerOrder:5,
+  meestBoxUsd:165,meestUsableKg:23.5,importReservePct:15,processingPct:3,targetProfitPerSoldLot:2,
+  floorProfitPerSoldLot:1,checkoutExtrasReserveUsd:4
+};
+const SETTING_META={
+  minHammer:["Minimum hammer ($)","Minimum auction opening price."],
+  buyerPremiumPct:["Buyer premium (%)","Revenue added to hammer."],
+  orderFee:["Order fee ($)","Customer fee per U.S. order."],
+  smallItemFee:["Small-item fee ($)","Customer fee per sold small auction lot."],
+  perOrderShippingFee:["Per-order shipping fee ($)","Additional customer fee per U.S. order."],
+  avgItemsPerOrder:["Avg items / customer order","Used to allocate order-level fees."],
+  meestBoxUsd:["Meest 25kg box cost ($)","Current planning cost for Poland → Arkansas."],
+  meestUsableKg:["Usable merchandise kg / box","Master-box capacity after carton/protection."],
+  importReservePct:["Import reserve (%)","Conservative customs/tariff reserve."],
+  processingPct:["Payment processing reserve (%)","Internal payment cost reserve."],
+  targetProfitPerSoldLot:["Target profit / sold lot ($)","Used for Target Buy."],
+  floorProfitPerSoldLot:["Floor profit / sold lot ($)","Used for Walk-away Max."],
+  checkoutExtrasReserveUsd:["Vinted checkout extras reserve ($)","Used when actual checkout total is unknown."]
+};
+let settings=loadSettings(), screenshots=[], current=null, statusTimer=null;
+
+const $=s=>document.querySelector(s);
+const money=n=>Number.isFinite(Number(n))?'$'+Number(n).toFixed(2):'$—';
+const num=n=>Number.isFinite(Number(n))?Number(n):0;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function loadSettings(){try{return {...DEFAULTS,...JSON.parse(localStorage.getItem('vv_settings')||'{}')}}catch{return {...DEFAULTS}}}
+function saveSettingsLocal(){localStorage.setItem('vv_settings',JSON.stringify(settings))}
+function cleanUrl(v){try{const u=new URL(v.trim());u.search='';u.hash='';return u.toString()}catch{return v.trim()}}
+function validVinted(v){try{const u=new URL(v);return /(^|\.)vinted\.[a-z.]+$/i.test(u.hostname)&&/\/items\//i.test(u.pathname)}catch{return false}}
+
+function renderSettings(){
+  $('#settingsGrid').innerHTML=Object.entries(SETTING_META).map(([k,[label,help]])=>`
+    <div class="field"><label>${esc(label)}</label><input data-setting="${k}" type="number" step=".01" value="${settings[k]}"><div class="muted" style="font-size:11px;margin-top:4px">${esc(help)}</div></div>`).join('');
+}
+$('#settingsBtn').onclick=()=>{renderSettings();$('#settingsModal').classList.add('show')};
+$('#closeSettings').onclick=()=>$('#settingsModal').classList.remove('show');
+$('#settingsModal').onclick=e=>{if(e.target.id==='settingsModal')$('#settingsModal').classList.remove('show')};
+$('#saveSettings').onclick=()=>{document.querySelectorAll('[data-setting]').forEach(i=>settings[i.dataset.setting]=num(i.value));saveSettingsLocal();$('#settingsModal').classList.remove('show');if(current)renderResult(current.analysis,current.url,current.inputs)};
+$('#resetSettings').onclick=()=>{settings={...DEFAULTS};saveSettingsLocal();renderSettings()};
+
+async function compressImage(file){
+  const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)});
+  const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=data});
+  const max=1400,scale=Math.min(1,max/Math.max(img.width,img.height));
+  const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',.76);
+}
+async function addFiles(files){
+  for(const f of [...files]){
+    if(!f.type.startsWith('image/')||screenshots.length>=8)continue;
+    try{screenshots.push(await compressImage(f))}catch{}
+  }
+  renderThumbs();
+}
+function renderThumbs(){
+  $('#thumbs').innerHTML=screenshots.map((src,i)=>`<div style="position:relative"><img class="thumb" src="${src}"><button data-rm="${i}" style="position:absolute;right:-4px;top:-5px;width:19px;height:19px;border-radius:50%;border:0;background:#fb7185;color:#07111f;font-weight:900;cursor:pointer">×</button></div>`).join('');
+}
+$('#fileInput').onchange=e=>addFiles(e.target.files);
+$('#dropZone').ondragover=e=>{e.preventDefault();e.dataTransfer.dropEffect='copy'};
+$('#dropZone').ondrop=e=>{e.preventDefault();addFiles(e.dataTransfer.files)};
+document.addEventListener('paste',e=>{const files=[...e.clipboardData.files].filter(f=>f.type.startsWith('image/'));if(files.length)addFiles(files)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-rm]');if(b){screenshots.splice(Number(b.dataset.rm),1);renderThumbs()}});
+
+const statusMessages=["Reading the listing…","Checking the images and description…","Researching realistic U.S. demand…","Estimating auction hammer and sell-through…","Calculating Meest and purchase ceiling…"];
+function startStatus(){let i=0;$('#status').classList.add('show');$('#statusText').textContent=statusMessages[0];statusTimer=setInterval(()=>{$('#statusText').textContent=statusMessages[++i%statusMessages.length]},1800)}
+function stopStatus(){clearInterval(statusTimer);$('#status').classList.remove('show')}
+function showError(msg){$('#error').textContent=msg;$('#error').classList.add('show')}
+function clearError(){$('#error').classList.remove('show')}
+
+function economics(a,inputs={}){
+  const p=a.auction_plan,l=a.logistics,listing=a.listing,s=settings;
+  const sold=Math.max(0,num(p.expected_sold_lots));
+  const hammer=Math.max(0,num(p.expected_hammer_total_usd));
+  const bp=hammer*(s.buyerPremiumPct/100);
+  const itemFee=sold*s.smallItemFee;
+  const orderAlloc=sold*((s.orderFee+s.perOrderShippingFee)/Math.max(.1,s.avgItemsPerOrder));
+  const revenue=hammer+bp+itemFee+orderAlloc;
+  const processing=revenue*(s.processingPct/100);
+  const meest=Math.max(0,num(l.estimated_total_weight_g))/1000*(s.meestBoxUsd/Math.max(.1,s.meestUsableKg));
+  const targetProfit=sold*s.targetProfitPerSoldLot;
+  const floorProfit=sold*s.floorProfitPerSoldLot;
+  const importRate=s.importReservePct/100;
+  const targetAllIn=Math.max(0,(revenue-processing-meest-targetProfit)/(1+importRate));
+  const maxAllIn=Math.max(0,(revenue-processing-meest-floorProfit)/(1+importRate));
+
+  let ask=inputs.priceOverride>0?inputs.priceOverride:num(listing.seller_price_usd);
+  let askAllIn=inputs.checkoutTotal>0?inputs.checkoutTotal:(ask>0?ask+s.checkoutExtrasReserveUsd:0);
+  const offerTarget=Math.max(0,targetAllIn-s.checkoutExtrasReserveUsd);
+  const walkItem=Math.max(0,maxAllIn-s.checkoutExtrasReserveUsd);
+  let opening=offerTarget;
+  if(ask>0)opening=Math.min(offerTarget,ask*.75);
+
+  let profitAtAsk=null;
+  if(askAllIn>0){
+    profitAtAsk=revenue-processing-meest-askAllIn-(askAllIn*importRate);
+  }
+
+  let verdict='OFFER';
+  if(a.evidence.confidence_pct<40||a.listing.listing_access==='poor'&&screenshots.length===0)verdict='NEED PHOTOS';
+  else if(askAllIn>0&&askAllIn<=targetAllIn*.75)verdict='STRONG BUY';
+  else if(askAllIn>0&&askAllIn<=targetAllIn)verdict='BUY';
+  else if(askAllIn>0&&askAllIn<=maxAllIn)verdict='OFFER';
+  else if(askAllIn>maxAllIn)verdict='PASS';
+  else verdict='OFFER';
+
+  return {sold,hammer,bp,itemFee,orderAlloc,revenue,processing,meest,targetProfit,floorProfit,targetAllIn,maxAllIn,offerTarget,walkItem,opening,ask,askAllIn,profitAtAsk,verdict};
+}
+function verdictClass(v){return v.includes('BUY')?'buy':v==='OFFER'?'offer':v==='PASS'?'pass':'need'}
+function li(arr){return (arr||[]).map(x=>'<li>'+esc(x)+'</li>').join('')||'<li class="muted">None identified</li>'}
+function renderResult(a,url,inputs={}){
+  current={analysis:a,url,inputs};const e=economics(a,inputs),p=a.auction_plan,l=a.logistics,listing=a.listing,ev=a.evidence;
+  $('#results').classList.add('show');
+  $('#verdictPill').className='pill '+verdictClass(e.verdict);$('#verdictPill').textContent=e.verdict;
+  $('#listingTitle').textContent=listing.title||'Vinted listing';
+  $('#listingMeta').textContent=[listing.category,listing.era_origin,listing.seller_price_local].filter(Boolean).join(' · ');
+  $('#confidenceNum').textContent=Math.round(ev.confidence_pct)+'%';$('#confidenceBar').style.width=Math.max(0,Math.min(100,ev.confidence_pct))+'%';
+  $('#offerPrice').textContent=e.verdict==='PASS'?money(e.walkItem):money(e.opening);
+  $('#offerLabel').textContent=e.verdict==='PASS'?'Absolute item-price ceiling':'Recommended opening offer';
+  $('#targetBuy').textContent=money(e.targetAllIn);$('#walkAway').textContent=money(e.maxAllIn);
+  $('#profitAsk').textContent=e.profitAtAsk==null?'$—':money(e.profitAtAsk);
+  $('#profitAsk').className='v '+(e.profitAtAsk==null?'':e.profitAtAsk>=0?'good':'bad');
+  $('#profitAskSub').textContent=e.askAllIn?('at ~'+money(e.askAllIn)+' all-in source cost'):'asking price not verified';
+
+  $('#hammerLow').textContent=money(p.low_hammer_total_usd);$('#hammerExp').textContent=money(p.expected_hammer_total_usd);$('#hammerHigh').textContent=money(p.high_hammer_total_usd);
+  $('#auctionLots').textContent=p.recommended_auction_lots;$('#sellThrough').textContent=Math.round(p.first_pass_sell_through_pct)+'%';$('#soldLots').textContent=Number(p.expected_sold_lots).toFixed(1);$('#avgHammer').textContent=money(p.avg_hammer_per_sold_lot_usd);
+
+  $('#econHammer').textContent=money(e.hammer);$('#econBP').textContent=money(e.bp);$('#econItemFee').textContent=money(e.itemFee);$('#econOrderFee').textContent=money(e.orderAlloc);
+  $('#econProcessing').textContent='−'+money(e.processing);$('#econMeest').textContent='−'+money(e.meest);$('#econTargetProfit').textContent='−'+money(e.targetProfit);$('#econImport').textContent=settings.importReservePct.toFixed(1)+'% of source cost';
+
+  $('#weight').textContent=Math.round(l.estimated_total_weight_g)+' g ('+l.weight_confidence+' confidence)';
+  const pieces=Math.max(1,listing.underwriting_piece_count);$('#freightPiece').textContent=money(e.meest/pieces);$('#shipProfile').textContent=l.shipping_profile.toUpperCase();$('#logisticsNote').textContent=l.logistics_note;
+  $('#strategy').textContent=p.strategy;$('#standouts').innerHTML=li(p.standout_items);$('#standoutWrap').style.display=(p.standout_items||[]).length?'block':'none';
+  $('#strengths').innerHTML=li(ev.strengths);$('#risks').innerHTML=li(ev.risks);$('#marketNotes').textContent=ev.market_notes;$('#confidenceNote').textContent=ev.confidence_note;
+  saveHistory({url,title:listing.title,verdict:e.verdict,offer:e.opening,max:e.maxAllIn,hammer:p.expected_hammer_total_usd,ts:Date.now(),analysis:a,inputs});
+  $('#results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+async function analyze(){
+  clearError();
+  const raw=$('#url').value.trim(),url=cleanUrl(raw);
+  if(!validVinted(url)){showError('Paste a valid Vinted item URL.');return}
+  const inputs={priceOverride:num($('#priceOverride').value),checkoutTotal:num($('#checkoutTotal').value)};
+  $('#analyzeBtn').disabled=true;startStatus();
+  try{
+    const r=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      url,screenshots,businessContext:settings
+    })});
+    const data=await r.json();
+    if(!r.ok)throw new Error(data.error||'Analysis failed.');
+    renderResult(data.analysis,url,inputs);
+  }catch(err){
+    const extra=String(err.message).includes('OPENAI_API_KEY')?' This deployment needs the OPENAI_API_KEY environment variable.':'';
+    showError((err.message||'Unable to analyze listing.')+extra);
+  }finally{$('#analyzeBtn').disabled=false;stopStatus()}
+}
+$('#analyzeBtn').onclick=analyze;$('#url').addEventListener('keydown',e=>{if(e.key==='Enter')analyze()});
+
+function getHistory(){try{return JSON.parse(localStorage.getItem('vv_history')||'[]')}catch{return[]}}
+function saveHistory(item){let h=getHistory().filter(x=>x.url!==item.url);h.unshift(item);h=h.slice(0,20);localStorage.setItem('vv_history',JSON.stringify(h));renderHistory()}
+function renderHistory(){const h=getHistory();$('#historyList').innerHTML=h.length?h.map((x,i)=>`
+  <div class="hist">
+    <span class="pill ${verdictClass(x.verdict)}">${esc(x.verdict)}</span>
+    <div class="histmeta"><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title||'Vinted listing')}</a><br><small>${new Date(x.ts).toLocaleString()} · expected hammer ${money(x.hammer)}</small></div>
+    <div class="histprice">${money(x.offer)}</div>
+    <button class="btn ghost" data-history="${i}">View</button>
+  </div>`).join(''):'<div class="muted" style="padding:10px 0">No analyses yet.</div>'}
+$('#historyList').onclick=e=>{const b=e.target.closest('[data-history]');if(!b)return;const x=getHistory()[Number(b.dataset.history)];if(!x)return;$('#url').value=x.url;renderResult(x.analysis,x.url,x.inputs||{})};
+$('#clearHistory').onclick=()=>{localStorage.removeItem('vv_history');renderHistory()};
+
+renderHistory();
+</script>
+</body>
+</html>
